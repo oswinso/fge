@@ -2,35 +2,32 @@
 import Layout, {type GAInfo} from '../layouts/Layout.astro';
 import {type Author} from "../components/AuthorBlock.astro";
 import {type Link} from "../components/LinkBlock.astro";
-import ReferenceList from '../components/ReferenceList.astro'
-import references from './references.json'; // Path to your JSON file
 
 const site_title = "Safety on the Fly";
-const title = "Safety on the Fly:";
-const subtitle = "Constructing Robust Safety Filters via Policy Control Barrier Functions at Runtime"
+const title = "Solving Parameter-Robust Avoid Problems with Unknown Feasibility using Reinforcement Learning";
+const subtitle = ""
 
 const authors: Author[] = [
-	{"name": "Luzia Knoedler", "url": "https://scholar.google.com/citations?user=oQKJuLoAAAAJ&hl=en", "number": 1, "asterisk": true},
-	{"name": "Oswin So", "url": "https://oswinso.xyz", "number": 2, "asterisk": true},
-	{"name": "Ji Yin", "url": "https://aeroastro.mit.edu/realm/team/ji-yin", "number": 3},
-	{"name": "Mitchell Black", "url": "https://www.blackmitchell.com", "number": 4},
-	{"name": "Zachary Serlin", "url": "https://zacharyserlin.com/", "number": 4},
-	{"name": "Panagiotis Tsiotras", "url": "https://scholar.google.com/citations?user=qmVayjgAAAAJ&hl=en", "number": 3},
-	{"name": "Javier Alonso-Mora", "url": "https://scholar.google.com/citations?user=JydqDdEAAAAJ&hl=en", "number": 1},
-	{"name": "Chuchu Fan", "url": "https://chuchu.mit.edu", "number": 2}
+	{"name": "Oswin So", "url": "https://oswinso.xyz", "number": 1, "asterisk": true},
+	{"name": "Eric Yang Yu", "url": "https://ericyangyu.github.io", "number": 1, "asterisk": true},
+	{"name": "Songyuan Zhang", "url": "https://syzhang092218-source.github.io", "number": 1},
+	{"name": "Matthew Cleaveland", "url": "https://scholar.google.com/citations?user=-zdHsU8AAAAJ&hl=en", "number": 2},
+	{"name": "Mitchell Black", "url": "https://www.blackmitchell.com", "number": 2},
+	{"name": "Chuchu Fan", "url": "https://chuchu.mit.edu", "number": 1}
 ]
 
 const links: Link[] = [
-	{"name": "Paper", "url": "https://ieeexplore.ieee.org/document/11122656", "icon_class": "fas fa-file-pdf"},
-	{"name": "Code", "url": "https://github.com/LuziaKn/rpcbf-safety-on-the-fly/tree/main", "icon_class": "fab fa-github"},
+	{"name": "Paper", "url": "https://oswinso.xyz/assets/publications/fge.pdf", "icon_class": "fas fa-file-pdf"},
+	{"name": "OpenReview", "url": "https://openreview.net/forum?id=5jjCUWg6VV", "icon_class": "fas fa-file"},
+	// {"name": "Code", "url": "https://github.com/LuziaKn/rpcbf-safety-on-the-fly/tree/main", "icon_class": "fab fa-github"},
 ]
 
 const bibtex = `
-@inproceedings{knoedler2025rpcbf,
-  title     = {Safety on the Fly: Constructing Robust Safety Filters via Policy Control Barrier Functions at Runtime},
-  author    = {Knoedler, Luzia and So, Oswin and Yin, Ji and Black, Mitchell and Serlin, Zachary and Tsiotras, Panagiotis and Alonso-Mora, Javier and Fan, Chuchu},
-  booktitle = {},
-  year      = {2025}
+@inproceedings{so2026solving,
+  title     = {Solving Parameter-Robust Avoid Problems with Unknown Feasibility using Reinforcement Learning},
+  author    = {So, Oswin and Yu, Eric Yang and Zhang, Songyuan and Cleaveland, Matthew and Black, Mitchell and Fan, Chuchu},
+ .booktitle={The Fourteenth International Conference on Learning Representations (ICLR)},
+  year={2026},
 }
 `.trim();
 
@@ -53,26 +50,14 @@ const ga: GAInfo = {"id": "G-XSZ0VNSN4H"};
 			</header>
 			<div class="section-body has-text-justified">
 				<p>
-					Control Barrier Functions (CBFs) have proven
-					to be an effective tool for performing safe control synthesis
-					for nonlinear systems. However, guaranteeing safety in the
-					presence of disturbances and input constraints for high
-					relative degree systems is a difficult problem. In this work,
-					we propose the Robust Policy CBF (RPCBF), a practical
-					approach for constructing robust CBF approximations online
-					via the estimation of a value function. We establish conditions
-					under which the approximation qualifies as a valid CBF and
-					demonstrate the effectiveness of the RPCBF-safety filter in
-					simulation on a variety of high relative degree input-constrained
-					systems. Finally, we demonstrate the benefits of our method
-					in compensating for model errors on a hardware quadcopter
-					platform by treating the model errors as disturbances.
+					Recent advances in deep reinforcement learning (RL) have achieved strong results on high-dimensional control tasks, but applying RL to optimal safe controller synthesis raises a fundamental mismatch: optimal safe controller synthesis seeks to maximize the set of states from which a system remains safe indefinitely, while RL optimizes expected returns over a user-specified distribution. This mismatch can yield policies that perform poorly on low-probability states still within the safe set. A natural alternative is to frame the problem as a robust optimization over a set of initial conditions that specify the initial state, dynamics and safe set, but whether this problem has a solution depends on the feasibility of the specified set, which is unknown a priori. We propose <strong>Feasibility-Guided Exploration (FGE)</strong>, a method that simultaneously identifies a subset of feasible initial conditions under which a safe policy exists, and learns a policy to solve the optimal control problem over this set of initial conditions. Empirical results demonstrate that FGE learns policies with over 50% more coverage than the best existing method for challenging initial conditions across tasks in the MuJoCo simulator.
 				</p>
 
 			</div>
 		</section>
 
 
+		<!--
 		<section class="container is-max-desktop">
 			<header>
 				<h2 class="section-title">Robust Policy CBFs: Constructing robust CBFs from the Policy Value Function</h2>
@@ -125,7 +110,7 @@ const ga: GAInfo = {"id": "G-XSZ0VNSN4H"};
 			</div>
 
 			<div class="section-body">
-				<div class="video-row"> <!-- Add a wrapper for the row -->
+				<div class="video-row">
 					<section class="task-section">
 						<div class="video-container">
 							<h3 class="task-name">MPPI</h3>
@@ -157,7 +142,7 @@ const ga: GAInfo = {"id": "G-XSZ0VNSN4H"};
 
 
 			<div class="container is-max-desktop">
-				<div class="video-row"> <!-- Add a wrapper for the row -->
+				<div class="video-row">
 					<section class="task-section">
 						<div class="video-container">
 							<h3 class="task-name"> <span class="yellow-text">PCBF</span> Safety Filter enters Obstacle</h3> 
@@ -179,6 +164,7 @@ const ga: GAInfo = {"id": "G-XSZ0VNSN4H"};
 				</div>
 			</div>
 		</section>
+		-->
 
 		<!--
 			<section id="finite-time-approximation" class="container 		is-max-desktop">
@@ -255,6 +241,7 @@ const ga: GAInfo = {"id": "G-XSZ0VNSN4H"};
 			-->
 		-->
 
+		<!--
 		<section id="suppl_video" class="container is-max-desktop">
 			<header>
 				<h2 class="section-title">Supplementary Video</h2>
@@ -266,20 +253,7 @@ const ga: GAInfo = {"id": "G-XSZ0VNSN4H"};
 				</video>
 			</div>
 		</section>
-
-
-
-
-
-		<ReferenceList references={references} />
-
-
-
-
-
-
-
-
+		-->
 </Layout>
 
 <style>
