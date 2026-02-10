@@ -1,0 +1,643 @@
+---
+import Layout, {type GAInfo} from '../layouts/Layout.astro';
+import {type Author} from "../components/AuthorBlock.astro";
+import {type Link} from "../components/LinkBlock.astro";
+import ReferenceList from '../components/ReferenceList.astro'
+import references from './references.json'; // Path to your JSON file
+
+const site_title = "Safety on the Fly";
+const title = "Safety on the Fly:";
+const subtitle = "Constructing Robust Safety Filters via Policy Control Barrier Functions at Runtime"
+
+const authors: Author[] = [
+	{"name": "Luzia Knoedler", "url": "https://scholar.google.com/citations?user=oQKJuLoAAAAJ&hl=en", "number": 1, "asterisk": true},
+	{"name": "Oswin So", "url": "https://oswinso.xyz", "number": 2, "asterisk": true},
+	{"name": "Ji Yin", "url": "https://aeroastro.mit.edu/realm/team/ji-yin", "number": 3},
+	{"name": "Mitchell Black", "url": "https://www.blackmitchell.com", "number": 4},
+	{"name": "Zachary Serlin", "url": "https://zacharyserlin.com/", "number": 4},
+	{"name": "Panagiotis Tsiotras", "url": "https://scholar.google.com/citations?user=qmVayjgAAAAJ&hl=en", "number": 3},
+	{"name": "Javier Alonso-Mora", "url": "https://scholar.google.com/citations?user=JydqDdEAAAAJ&hl=en", "number": 1},
+	{"name": "Chuchu Fan", "url": "https://chuchu.mit.edu", "number": 2}
+]
+
+const links: Link[] = [
+	{"name": "Paper", "url": "https://ieeexplore.ieee.org/document/11122656", "icon_class": "fas fa-file-pdf"},
+	{"name": "Code", "url": "https://github.com/LuziaKn/rpcbf-safety-on-the-fly/tree/main", "icon_class": "fab fa-github"},
+]
+
+const bibtex = `
+@inproceedings{knoedler2025rpcbf,
+  title     = {Safety on the Fly: Constructing Robust Safety Filters via Policy Control Barrier Functions at Runtime},
+  author    = {Knoedler, Luzia and So, Oswin and Yin, Ji and Black, Mitchell and Serlin, Zachary and Tsiotras, Panagiotis and Alonso-Mora, Javier and Fan, Chuchu},
+  booktitle = {},
+  year      = {2025}
+}
+`.trim();
+
+const ga: GAInfo = {"id": "G-XSZ0VNSN4H"};
+
+---
+
+<Layout site_title={site_title} title={title} subtitle={subtitle} authors={authors} links={links} bibtex={bibtex} ga={ga}>
+	<section class="teaser container is-max-desktop">
+		<div class="teaser-vids">
+			<img src=`${import.meta.env.BASE_URL}/media/teaser_main.jpg` />
+		</div>
+	</section>
+
+
+	<main>
+		<section id="abstract" class="container is-max-desktop">
+			<header>
+				<h2 class="section-title">Abstract</h2>
+			</header>
+			<div class="section-body has-text-justified">
+				<p>
+					Control Barrier Functions (CBFs) have proven
+					to be an effective tool for performing safe control synthesis
+					for nonlinear systems. However, guaranteeing safety in the
+					presence of disturbances and input constraints for high
+					relative degree systems is a difficult problem. In this work,
+					we propose the Robust Policy CBF (RPCBF), a practical
+					approach for constructing robust CBF approximations online
+					via the estimation of a value function. We establish conditions
+					under which the approximation qualifies as a valid CBF and
+					demonstrate the effectiveness of the RPCBF-safety filter in
+					simulation on a variety of high relative degree input-constrained
+					systems. Finally, we demonstrate the benefits of our method
+					in compensating for model errors on a hardware quadcopter
+					platform by treating the model errors as disturbances.
+				</p>
+
+			</div>
+		</section>
+
+
+		<section class="container is-max-desktop">
+			<header>
+				<h2 class="section-title">Robust Policy CBFs: Constructing robust CBFs from the Policy Value Function</h2>
+			</header>
+			<div class="section-body flex-col">
+				<p is:raw>
+					In this work, we leverage the insight that the <i>maximum-over-time</i> constraint function is a CBF for <u><strong>any</strong></u> choice of  <i>design policy</i> \(\pi\). The policy value function for a policy \(\pi\) is defined as
+				</p>
+				<div class="display-eq" is:raw>
+					\( \displaystyle V_\infty^{h,\pi}(x) \coloneqq \sup_{t \geq 0}\, h(x_t^\pi) \),
+				</div>
+				<p is:raw>
+					where the avoid set \( \mathcal{A} \) is described as the superlevel set of some continuous constraint function \(h\):
+				</p>
+				<div class="display-eq" is:raw>
+					\( \displaystyle \mathcal{A} = \{ x \mid h(x) > 0 \} \).
+				</div>
+				<p is:raw>
+					\(V_\infty^{h,\pi}\) contains knowledge about the invariant set, which can be used to render a (potentially unsafe) nominal policy \(\pi_\mathrm{nom}\) safe via a safety filter framework.
+					However, deriving \(V_\infty^{h,\pi}\) over the infinite horizon is computationally intractable. 
+					Although an approximation of the policy value function \(V_\infty^{h,\pi}\) can be learned<a href="#ref-1" class="reference-number"> [1] </a>, it requires certifying the neural network as a valid CBF and limits the interpretability. Furthermore, it does not consider uncertainties in the system dynamics.
+					Therefore, we present a practical approximation of Robust Policy CBFs.
+				</p>
+				<p is:raw>
+				We define the <i>robust</i> policy value function equivalent of the above introduced value function as
+				</p>
+				<div class="display-eq" is:raw>
+					\( \displaystyle V_\infty^{h,\pi}(x) \coloneqq \sup_{t \geq 0}\, \sup_{d(\cdot)} h(x_t^\pi) \).
+				</div>
+				Since this formulation is computationally intractable, we propose a practical (finite-time and sampling-based) approximation:
+				<div class="display-eq" is:raw>
+					\( \displaystyle V_{T,N}^{h,\pi}(x_0) \coloneqq \max_{i = 1,\ldots,N}\sup_{0 \leq t < T} h(x_t^i) \)
+				</div>
+				<p is:raw>
+				More details can be found in the paper.
+				</p>
+			</div>
+		</section>
+
+
+		<section class="container is-max-desktop">
+			<header>
+				<h2 class="section-title">Simulation Experiments</h2>
+			</header>
+
+			<div class="section-body flex-col">
+				<p is:raw>
+					To assess the safety improvements brought about by the proposed RPCBF, we integrate it with Shield-MPPI<a href="#ref-2" class="reference-number"> [2] </a> and evaluate the performance on AutoRally. 
+				</p>
+			</div>
+
+			<div class="section-body">
+				<div class="video-row"> <!-- Add a wrapper for the row -->
+					<section class="task-section">
+						<div class="video-container">
+							<h3 class="task-name">MPPI</h3>
+							<img src={`${import.meta.env.BASE_URL}/media/MPPI.gif.gif`} alt="MPPI GIF" />
+						</div>
+					</section>
+
+					<section class="task-section">
+						<div class="video-container"> 
+							<h3 class="task-name">Shield-MPPI-RPCBF</h3>
+							<img src={`${import.meta.env.BASE_URL}/media/Shield-MPPI_RPCBF.gif.gif`} alt="Shield-MPPI-RPCBF GIF" />
+						</div>
+					</section>
+				</div>
+			</div>
+		</section>
+
+
+		<section class="container is-max-desktop">
+			<header>
+				<h2 class="section-title">Hardware Experiments</h2>
+			</header>
+			<div class="section-body flex-col">
+				<p is:raw>
+					We conduct hardware experiments on the Crazyflie platform to determine whether the proposed RPCBF can be robust to disturbances encountered in the real world. The error between a simple double integrator model and the true dynamics is treated as an acceleration disturbance. We randomly generate an unsafe <span style="color: red;">nominal</span> trajectory which intersects with the cylindrical obstacle and is tracked using the onboard PID controller.
+					The proposed RPCBF safety filter runs at 100 Hz.
+				</p>
+			</div>
+
+
+			<div class="container is-max-desktop">
+				<div class="video-row"> <!-- Add a wrapper for the row -->
+					<section class="task-section">
+						<div class="video-container">
+							<h3 class="task-name"> <span class="yellow-text">PCBF</span> Safety Filter enters Obstacle</h3> 
+							<video autoplay muted playsinline loop>
+								<source type="video/webm" src={`${import.meta.env.BASE_URL}/media/zero.webm`} />
+								<source type="video/mp4" src={`${import.meta.env.BASE_URL}/media/zero.mp4`} />
+							</video>
+						</div>
+					</section>
+
+					<section class="task-section">
+							<h3 class="task-name"> <span class="blue-text">RPCBF</span> Safety Filter is safe</h3> 
+							<video autoplay muted playsinline loop>
+								<source type="video/webm" src={`${import.meta.env.BASE_URL}/media/rob.webm`} />
+								<source type="video/mp4" src={`${import.meta.env.BASE_URL}/media/rob.mp4`} />
+							</video>
+						</div>
+					</section>
+				</div>
+			</div>
+		</section>
+
+		<!--
+			<section id="finite-time-approximation" class="container 		is-max-desktop">
+				<header>
+					<h2 class="section-title">Finite-Time Approximation (of Infinite Time)</h2>
+				</header>
+				<div class="section-body flex-col">
+					<p is:raw>
+						To enable numerical evaluation of the value function, we consider a <em>finite horizon</em> approximation of the infinite-horizon value function. For horizon \(T\), we use the following approximation.
+					</p>
+					<div class="hidden lg:block display-eq" is:raw>
+					$$
+					\begin{aligned}
+						V_\infty^{h,\pi}(x_0)
+						&\coloneqq \max \left\{ \sup_{0 \leq t < T}\, h(x_t^\pi),\;  V_\infty^{h,\pi}(x_T) \right\} \\[1.2em]
+						&\approx \underbrace{\sup_{0\leq t < T} h(x_t^\pi)}_{\coloneqq V^{h,\pi}_T(x_0) }
+					\end{aligned}
+					$$
+					</div>
+					<div class="lg:hidden display-eq" is:raw>
+						$$
+						\begin{aligned}
+						&\mathrel{\phantom{=}} V_\infty^{h,\pi}(x_0) \\
+						&\coloneqq \max \left\{ \sup_{0 \leq t < T}\, h(x_t^\pi),\;  V_\infty^{h,\pi}(x_T) \right\} \\[1.2em]
+						&\approx \underbrace{\sup_{0\leq t < T} h(x_t^\pi)}_{\coloneqq V^{h,\pi}_T(x_0) }
+						\end{aligned}
+						$$
+					</div>
+					<p>
+						In particular, we prove that given a sufficiently long horizon \(T\), the finite-time approximation <span is:raw>\(V^{h,\pi}_T(x_0)\)</span> is a <strong>valid</strong> CBF. See <a href="https://arxiv.org/pdf/2410.11157#nameddest=corollary.1" target="_blank" rel="noopener noreferrer">Corollary 1 in the paper</a> for more details.
+					</p>
+
+					<p>
+						<strong>Note:</strong> The finite-horizon truncation here is closely related to the truncation used by practitioners of MPC. Namely, recursive feasibility of MPC often requires a terminal constraint set, yet this is rarely used in practice.
+						See <a href="https://arxiv.org/pdf/2410.11157#nameddest=corollary.1" target="_blank" rel="noopener noreferrer">the paper</a> for more details.
+					</p>
+				</div>
+			</section>
+
+
+
+			<section id="sampling-approximation" class="container is-max-desktop">
+				<header>
+					<h2 class="section-title">Sampling-Based Approximation (of Worst-Case Disturbance)</h2>
+				</header>
+				<div class="section-body flex-col">
+					<p is:raw >
+						We further introduce a sampling-based approximation of the worst-case disturbance over the finite horizon.
+						Instead of performing the intractable optimization over all disturbances, we sample \( N \) disturbances and evaluate the worst-case disturbance trajectory.
+					</p>
+					<div class="display-eq" is:raw>
+						\( \displaystyle V_{T,N}^{h,\pi}(x_0) \coloneqq \max_{i = 1,\ldots,N}\sup_{0 \leq t < T} h(x_t^i) \).
+					</div>
+					<p>
+						For simplicity, we sample the disturbances uniformly for each timestep. While this does not perform exact minimization, we find that this performs well in practice.
+					</p>
+					<p>
+						While we do not explore this here, other optimizers can be used to better approximate the worst-case disturbances. We leave this as future work.
+					</p>
+				</div>
+			</section>
+
+			<!--
+			<section class="container is-max-desktop">
+				<header>
+					<h2 class="section-title">Using Cubic Splines to Approximate the Maximum over Time</h2>
+				</header>
+				<div class="section-body flex-col">
+					<p>
+						needs to be added
+					</p>
+				</div>
+			</section>
+			-->
+		-->
+
+		<section id="suppl_video" class="container is-max-desktop">
+			<header>
+				<h2 class="section-title">Supplementary Video</h2>
+			</header>
+			<div class="section-body">
+				<video controls poster="${import.meta.env.BASE_URL}/media/video_thumbnail.png">
+					<source type="video/mp4" src=`${import.meta.env.BASE_URL}/media/rpcbf_accomp_video_pres_ral_reduced.webm`/>
+					<source type="video/mp4" src=`${import.meta.env.BASE_URL}/media/rpcbf_accomp_video_pres_ral_reduced.mp4`/>
+				</video>
+			</div>
+		</section>
+
+
+
+
+
+		<ReferenceList references={references} />
+
+
+
+
+
+
+
+
+</Layout>
+
+<style>
+	main {
+		display: flex;
+		flex-direction: column;
+		gap: 3rem;
+		margin: 3rem 0;
+		padding: 0 1.25rem;
+	}
+
+	main > section.container {
+		width: 100%;
+		margin: 1rem auto;
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.section-body {
+		display: flex;
+		align-items: center;
+		row-gap: 0.8em;
+		column-gap: 1em;
+		flex-wrap: wrap;  
+		justify-content: space-around;
+
+		font-size: 1.2em;
+	}
+
+	.full-width {
+		width: 100%;
+	}
+
+	.display-eq {
+		font-size: large;
+	}
+
+	@media screen and (min-width: 1024px) {
+		.display-eq {
+			font-size: xx-large;
+		}
+	}
+
+	.section-body > p {
+		align-self: flex-start;
+	}
+
+	.teaser {
+		font-family: "Google Sans", sans-serif;
+		display: flex;
+		align-items: center;
+		gap: 1em;
+		flex-wrap: wrap;
+	}
+
+	.teaser > header {
+		padding: 0 1.25rem;
+	}
+
+	#summary > .section-body {
+		flex-wrap: wrap;
+		text-align: center;
+		flex-direction: column-reverse;
+	}
+
+    .teaser-vids {
+        display: flex; /* Use flexbox for centering */
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically if needed */
+    }
+
+    .teaser-vids img {
+        width: 70%; /* Set to the desired size */
+        max-width: 800px; /* Limit maximum size */
+        height: auto; /* Maintain aspect ratio */
+    }
+
+	//#epigraph-form > .section-body {
+	//    flex-direction: column;
+	//}
+
+	.flex-col {
+		flex-direction: column;
+	}
+
+	#experiments > .section-body {
+		flex-direction: column;
+		row-gap: 1.5em;
+		margin: 0 -1rem;
+	}
+
+	#abstract > .section-body {
+		flex-direction: column;
+		row-gap: 1.1em;
+	}
+
+
+	@media screen and (min-width: 1024px) {
+		.teaser {
+			flex-wrap: nowrap;
+		}
+
+		.teaser > header {
+			padding: 0 0;
+		}
+
+		#summary > .section-body {
+			flex-wrap: nowrap;
+			flex-direction: row;
+		}
+
+		main {
+			padding: 0 0;
+		}
+	}
+
+	.teaser > header {
+		text-align: center;
+		font-size: 1.7rem;
+		flex: 1 4 auto;
+	}
+
+	.teaser > .teaser-vids {
+		flex: 1 6 auto;
+		display: flex;
+		max-width: 100%;
+	}
+
+	video {
+		min-width: 5%;
+	}
+
+
+	#summary > .section-body > video {
+		flex: 1 1 auto;
+		max-height: 80vh;
+	}
+
+	h2, h3 {
+		color: #363636;
+	}
+
+	section {
+		font-family: "Open Sans", sans-serif;
+	}
+
+	iframe {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+
+		border: 0;
+	}
+
+	.avoidwrap {
+		display: inline-block;
+	}
+
+	#unicycle-vid-col {
+		width: 100.0%
+	}
+
+	#unicycle-txt-col {
+		width: 100.0%;
+	}
+
+	.section-title {
+		font-weight: 600;
+		line-height: 1.125;
+
+		font-size: 1.6rem;
+	}
+
+	.task-name {
+		font-weight: 600;
+		font-size: 1.4rem;
+		text-align: center;
+	}
+
+	.section-title:not(:last-child) {
+		margin-bottom: 1.5rem;
+	}
+
+	@media screen and (min-width: 1280px) {
+		.short-tag {
+			font-size: 2rem;
+		}
+
+		.section-title {
+			font-size: 1.75rem;
+		}
+
+		.section-title:not(:last-child) {
+			margin-bottom: 1.5rem;
+		}
+
+		#unicycle-vid-col {
+			width: 40.0%
+		}
+
+		#unicycle-txt-col {
+			width: 60.0%;
+		}
+	}
+
+	@media screen and (min-width: 2000px) {
+		#unicycle-vid-col {
+			width: 50%;
+		}
+
+		#unicycle-txt-col {
+			width: 50%;
+		}
+	}
+
+	u {
+		text-decoration: none;
+		border-bottom: 1px solid #444444;
+	}
+
+	#abstract > .section-body > p {
+		font-size: 0.9rem;
+	}
+
+	@media screen and (min-width: 1024px) {
+		#abstract > .section-body > p {
+			font-size: 0.95em;
+		}
+	}
+
+	figcaption {
+		font-size: 0.8em;
+	}
+
+	#shade-blue {
+		background-color: #E0F7FA;
+		color: #167783;
+		padding: 0.2em 0.3em;
+	}
+
+	#cost-blue {
+		color: #348ABD;
+		font-weight: 600;
+	}
+
+	.obj-green {
+		color: #8EBA42;
+		font-weight: 600;
+	}
+
+	.constr-red {
+		color: #E24A33;
+		font-weight: 600;
+	}
+
+	.box-green, .box-red {
+		padding: 0.1em 0.25em;
+	}
+
+	.box-green {
+		background-color: #E8F5E9;
+		color: #3D8840;
+	}
+
+	.box-red {
+		background-color: #FFEBEE;
+		color: #AE2020;
+	}
+
+	dl.task-summary {
+		display: grid;
+		grid-template-columns: min-content auto;
+		margin: 0 auto 0.4em;
+		grid-column-gap: 1em;
+		align-items: center;
+	}
+
+	.def-stabilize {
+		color: hsl(122 58% 20%);
+	}
+
+	.def-avoid {
+		//color: hsl(0 89% 20%);
+		color: hsl(0 89% 30%);
+	}
+
+	@media screen and (min-width: 1024px) {
+		dl.task-summary {
+			max-width: 80%;
+		}
+	}
+
+	dt {
+		grid-column: 1;
+		font-weight: 600;
+		font-size: 1.2em;
+		text-align: center;
+	}
+
+	dd {
+		grid-column: 2;
+	}
+
+	dt, dd {
+		display: table-cell;
+		margin: 0;
+		padding: .5em .5em;
+	}
+
+	.video-row {
+		display: flex;                 /* Use Flexbox for the video row */
+		justify-content: space-between; /* Space videos evenly */
+		flex-wrap: wrap;
+		row-gap: 1em;
+	}
+
+	.task-section {
+		flex: 1 1 360px;                       /* Allow sections to grow equally */
+		margin: 0 2px;               /* Add some margin between sections */
+	}
+
+	.video-container {
+		width: 100%;                   /* Make the video container full width */
+	}
+
+	video {
+		width: 100%;                   /* Make the video take full width of the container */
+		height: auto;                  /* Maintain aspect ratio */
+	}
+
+	.yellow-text {
+    	color: orange;  /* Set the text color to yellow */
+	}
+
+	.blue-text {
+    	color: #348ABD;  /* Set the text color to yellow */
+	}
+
+	.red-text {
+    	color: red;  /* Set the text color to yellow */
+	}
+
+	.hidden {
+		display: none;
+	}
+
+	@media screen and (min-width: 1024px) {
+		.lg\:hidden {
+			display: none;
+		}
+
+		.lg\:block {
+			display: block;
+		}
+	}
+
+
+</style>
