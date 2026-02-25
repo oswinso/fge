@@ -64,6 +64,9 @@ const { site_title, title, subtitle, authors, links , bibtex, ga} = Astro.props;
 		<h1>{title}</h1>
 		{ (subtitle !== undefined && subtitle != "") && <p>{subtitle}</p> }
 	</hgroup>
+	<div class="is-size-5 conference-name has-text-centered">
+		<span class="has-text-weight-semibold">ICLR 2026</span>
+	</div>
 	<AuthorBlock authors={authors} />
 	<LinkBlock links={links} />
 </header>
@@ -122,6 +125,16 @@ const { site_title, title, subtitle, authors, links , bibtex, ga} = Astro.props;
 		font-weight: 300;
 		font-size: 1.0rem;
 		line-height: 1.125;
+	}
+
+	.conference-name {
+		margin-top: -1.2rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.conference-name > span {
+		font-family: "Inter Tight", sans-serif;
+		color: #5a5a5a;
 	}
 
 	@media screen and (min-width: 1280px) {
