@@ -55,7 +55,7 @@ const ga: GAInfo = {"id": "G-XSZ0VNSN4H"};
 			<div class="section-body flex-col">
 				<ul>
 					<li><strong>Feasibility-Guided Exploration (FGE)</strong> is a framework for solving safety problems over a set of parameters (dictating the initial state, safe set, and dynamics), even when the set of parameters may include parameters that are <em>infeasible</em> (i.e. always unsafe).</li>
-					<li><strong>FGE is performant,</strong> with many parameters that only FGE is able to render safe.</li>
+					<li><strong>FGE is performant,</strong> with many hard parameters that only FGE is able to render safe (high <em>Coverage Gain</em>), while FGE doesn't regress performance on easier parameters (low <em>Coverage Loss</em>).</li>
 				</ul>
 			</div>
 		</section>
@@ -155,7 +155,7 @@ const ga: GAInfo = {"id": "G-XSZ0VNSN4H"};
 			</div>
 		</section>
 
-		<section class="container is-max-desktop">
+		<!-- <section class="container is-max-desktop">
 			<header>
 				<h2 class="section-title">Feasible Robust Optimization with Saddle-Point Finding</h2>
 			</header>
@@ -165,7 +165,7 @@ const ga: GAInfo = {"id": "G-XSZ0VNSN4H"};
 			<header>
 				<h2 class="section-title">Estimating the Feasible Set</h2>
 			</header>
-		</section>
+		</section> -->
 
 
 		<!--
@@ -351,6 +351,9 @@ const ga: GAInfo = {"id": "G-XSZ0VNSN4H"};
 		-->
 
 		<section class="container is-max-desktop">
+			<header>
+				<h2 class="section-title">Feasibility-Guided Exploration (FGE)</h2>
+			</header>
 			<div class="section-body flex-col">
 				<img src={`${import.meta.env.BASE_URL}/media/diagram.jpg`} />
 			</div>

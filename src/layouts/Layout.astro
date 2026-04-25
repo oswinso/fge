@@ -47,7 +47,14 @@ const { site_title, title, subtitle, authors, links , bibtex, ga} = Astro.props;
 
 	<script>
 		document.addEventListener("DOMContentLoaded", function () {
-			renderMathInElement(document.body, {
+			const renderMath = (window as Window & {
+				renderMathInElement?: (
+					element: HTMLElement,
+					options: { strict: boolean; trust: boolean },
+				) => void;
+			}).renderMathInElement;
+
+			renderMath?.(document.body, {
 				strict: false,
 				trust: true,
 			});
