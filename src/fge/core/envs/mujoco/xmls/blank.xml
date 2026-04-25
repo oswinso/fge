@@ -1,0 +1,21 @@
+<mujoco model="planar hopper">
+    <include file="./common/skybox.xml"/>
+    <include file="./common/visual.xml"/>
+    <include file="./common/materials.xml"/>
+
+    <statistic extent="2" center="0 0 .5"/>
+
+    <option timestep="0.005" iterations="4" ls_iterations="10">
+        <flag eulerdamp="disable"/>
+    </option>
+
+    <custom>
+        <numeric data="6" name="max_contact_points"/>
+        <!--  This is the number of geom pairs considered during collision checking... -->
+        <numeric data="5" name="max_geom_pairs"/>
+    </custom>
+
+    <worldbody>
+        <camera name="cam0" pos="0 -2.8 0.8" euler="90 0 0" mode="trackcom"/>
+    </worldbody>
+</mujoco>

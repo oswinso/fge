@@ -1,0 +1,40 @@
+<mujoco model="point">
+    <include file="./common/skybox.xml"/>
+    <include file="./common/visual.xml"/>
+    <include file="./common/materials.xml"/>
+
+    <worldbody>
+        <!-- Floor from x=0 to x=50, y=0 to y=50 -->
+        <geom name="floor" pos="25 25 0" size="25 25 0.1" type="plane" condim="3" material="gridbig"/>
+
+        <camera name="top" pos="25 25.5 62" xyaxes="1 0 0 0 1 0.0" />
+
+        <!-- Wall at x=0, extends from y=0 to y=50 -->
+0       <geom name="wall_0" pos="0 25 0" size="0.1 25 1.0" type="box" material="danger"/>
+        <geom name="wall_1" pos="35 25 0" size="0.1 25 1.0" type="box" material="danger"/>
+        <geom name="wall_2" pos="45 25 0" size="0.1 25 1.0" type="box" material="danger"/>
+        <geom name="wall_3" pos="50 25 0" size="0.1 25 1.0" type="box" material="danger"/>
+
+        <!-- Rectangular obstacle from (45, 1) to (50, 2.5) -->
+        <geom name="obstacle" pos="47.5 1.75 0" size="2.5 0.75 0.5" type="box" material="danger_fill"/>
+
+        <!-- Mark the wind region from (35, 5) to (45, 15) -->
+        <geom name="wind_region" pos="40 10 0" size="5 5 1.0" type="box" material="wind"/>
+
+        <!-- Add goal region in green from (0, 0) to (50, 1) -->
+        <geom name="goal" pos="25 .5 0" size="25 .5 1.0" type="box" material="goal"/>
+
+        <body name="robot" pos="25 40 .1" euler="0 0 -90">
+            <light name="light" pos="0 0 1.5" exponent="100" mode="trackcom"/>
+
+            <camera name="vision" pos="0 0 .15" xyaxes="0 -1 0 .4 0 1" fovy="90"/>
+            <!-- <geom name="camera" pos="-.2 0 0" type="sphere" size=".05"/> -->
+            <joint type="slide" axis="1 0 0" name="x" damping="0.01"/>
+            <joint type="slide" axis="0 1 0" name="y" damping="0.01"/>
+            <joint type="hinge" axis="0 0 1" name="z" damping="0.005"/>
+            <geom name="robot" type="sphere" size="1.0" friction="1 0.01 0.01" material="self" />
+            <geom name="pointarrow" pos="1.0 0 0" size="0.5 0.5 0.5" type="box" material="self" />
+            <site name="robot" rgba="1 0 0 .1"/>
+        </body>
+    </worldbody>
+</mujoco>
