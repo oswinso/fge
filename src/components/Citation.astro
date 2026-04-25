@@ -1,0 +1,24 @@
+---
+export interface ReferenceItem {
+	id: string;
+}
+
+export interface Props {
+	refId: string;
+	references: ReferenceItem[];
+}
+
+const { refId, references } = Astro.props;
+
+const referenceIndex = references.findIndex((reference) => reference.id === refId);
+
+if (referenceIndex === -1) {
+	throw new Error(`Unknown citation id: ${refId}`);
+}
+
+const number = referenceIndex + 1;
+---
+
+<a href={`#ref-${refId}`} class="reference-number" aria-label={`Reference ${number}`}>
+	[{number}]
+</a>

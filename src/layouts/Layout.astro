@@ -43,8 +43,16 @@ const { site_title, title, subtitle, authors, links , bibtex, ga} = Astro.props;
 	<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js" integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t" crossorigin="anonymous"></script>
 
 	<!-- To automatically render math in text elements, include the auto-render extension: -->
-	<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"
-			onload="renderMathInElement(document.body);"></script>
+	<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			renderMathInElement(document.body, {
+				strict: false,
+				trust: true,
+			});
+		});
+	</script>
 
 	<script defer data-domain="mit-realm.github.io" src="https://plausible.io/js/script.js"></script>
 	<script async src={`https://www.googletagmanager.com/gtag/js?id=${ga.id}`}></script>

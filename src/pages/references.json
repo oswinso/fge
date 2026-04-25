@@ -1,16 +1,18 @@
 [
     {
-        "author": "Oswin So, Zachary Serlin, Makai Mann, Jake Gonzales, Kwesi Rutledge, Nicholas Roy, and Chuchu Fan",
-        "title": "How to Train Your Neural Control Barrier Function: Learning Safety Filters for Complex Input-Constrained Systems",
-        "journal": "IEEE International Conference on Robotics and Automation (ICRA)",
-        "year": "2024",
-        "url": "https://mit-realm.github.io/pncbf/"
+        "id": "rarl2017",
+        "author": "Lerrel Pinto, James Davidson, Rahul Sukthankar, and Abhinav Gupta",
+        "title": "Robust Adversarial Reinforcement Learning",
+        "venue": "Proceedings of the 34th International Conference on Machine Learning (ICML)",
+        "year": "2017",
+        "url": "https://proceedings.mlr.press/v70/pinto17a.html"
       },
 
       {
+        "id": "shieldmppi2023",
         "author": "Ji Yin, Charles Dawson, Chuchu Fan, and Panagiotis Tsiotras",
         "title": "Shield model predictive path integral: A computationally efficient robust MPC method using control barrier functions",
-        "journal": "IEEE Robotics and Automation Letters",
+        "venue": "IEEE Robotics and Automation Letters",
         "year": "2023",
         "url": "https://aeroastro.mit.edu/news-impact/shield-model-predictive-path-integral-a-computationally-efficient-robust-mpc-method-using-control-barrier-functions/"
       }
