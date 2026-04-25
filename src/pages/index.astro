@@ -106,10 +106,18 @@ const ga: GAInfo = {"id": "G-XSZ0VNSN4H"};
 					For \(\theta < 0\), there are no actions that can keep the system safe.
 					In particular, if we examine the robust optimization problem:
 				</p>
-				<div class="display-eq" is:raw>
+				<div class="display-eq eq-large" is:raw>
 					$$
 						\max_{a_0 \in [0, 1]} \min_{\theta \in [-1, 1]} \mathbb{I}\{ a_0 < \theta \}
 						= \max_{a_0 \in [0, 1]} \mathbb{I}\{ a_0 < -1 \},
+					$$
+				</div>
+				<div class="display-eq eq-small" is:raw>
+					$$
+					\begin{aligned}
+						&\mathrel{\phantom{=}} \max_{a_0 \in [0, 1]} \min_{\theta \in [-1, 1]} \mathbb{I}\{ a_0 < \theta \} \\
+						&= \max_{a_0 \in [0, 1]} \mathbb{I}\{ a_0 < -1 \},
+					\end{aligned}
 					$$
 				</div>
 				<p>
@@ -126,7 +134,7 @@ const ga: GAInfo = {"id": "G-XSZ0VNSN4H"};
 				<p is:raw>
 					We thus solve the following optimization problem instead, which maximizes the <strong>size</strong> of the safe set:
 				</p>
-				<div class="display-eq" is:raw>
+				<div class="display-eq eq-large" is:raw>
 					$$
 					\begin{split}
 					\max_{\bar{\Theta} \subseteq \Theta} \quad &\lvert \bar{\Theta} \rvert, \\
@@ -134,14 +142,32 @@ const ga: GAInfo = {"id": "G-XSZ0VNSN4H"};
 					\end{split}
 					$$
 				</div>
+				<div class="display-eq eq-small" is:raw>
+					$$
+					\begin{gathered}
+					\max_{\bar{\Theta} \subseteq \Theta} \quad \lvert \bar{\Theta} \rvert,\;
+					\text{s.t.} \; \min_{\pi} \mathbb{I}\{ \text{safe} \} = 1, \\
+					\text{safe} \coloneqq ( \mathbf{s}_k \notin \mathcal{F}_\theta,\quad \forall k \geq 0,\; \forall \theta \in \bar{\Theta} )
+					\end{gathered}
+					$$
+				</div>
 				<p>
 					where <span class="circled">1</span> can be written as the following robust optimization problem:
 				</p>
-				<div class="display-eq" is:raw>
+				<div class="display-eq eq-large" is:raw>
 					$$
 					\begin{split}
 					\max_{\pi} \min_{\theta \in \bar{\Theta}} \quad &\sum_{k=0}^{T_\theta} -\mathbb{I}\{ \mathbf{s}_k \not\in \mathcal{F}_\theta \}, \\
 					\text{s.t.} \quad & \mathbf{s}_{k+1} = f_\theta(\mathbf{s}_k, \pi_\theta(\mathbf{s}_k)), \quad \mathbf{s}_0 = s_0(\theta).
+					\end{split}
+					$$
+				</div>
+				<div class="display-eq eq-small" is:raw>
+					$$
+					\begin{split}
+					\max_{\pi} \min_{\theta \in \bar{\Theta}} \quad &\sum_{k=0}^{T_\theta} -\mathbb{I}\{ \mathbf{s}_k \not\in \mathcal{F}_\theta \}, \\
+					\text{s.t.} \quad & \mathbf{s}_{k+1} = f_\theta(\mathbf{s}_k, \pi_\theta(\mathbf{s}_k)), \\
+					 &\mathbf{s}_0 = s_0(\theta).
 					\end{split}
 					$$
 				</div>
@@ -152,6 +178,7 @@ const ga: GAInfo = {"id": "G-XSZ0VNSN4H"};
 					<li>Given an estimate, how do we solve the robust optimization problem?</li>
 					<li>How do we identify the <em>largest</em> set of feasible parameters <span is:raw>\( \bar{\Theta} \)</span>?</li>
 				</ol>
+				We solve the first using an approach from online learning, while we solve the second by leveraging properties of the problem structure. See the paper for details. 
 			</div>
 		</section>
 
@@ -465,6 +492,10 @@ const ga: GAInfo = {"id": "G-XSZ0VNSN4H"};
 		height: 1.2em;
 	}
 
+	.section-body > p,div,span {
+		max-width: 100%;
+	}
+
 	.section-body {
 		display: flex;
 		align-items: center;
@@ -487,6 +518,24 @@ const ga: GAInfo = {"id": "G-XSZ0VNSN4H"};
 	@media screen and (min-width: 1024px) {
 		.display-eq {
 			font-size: xx-large;
+		}
+	}
+
+	.eq-small {
+		display: block;
+	}
+
+	.eq-large {
+		display: none;
+	}
+
+	@media screen and (min-width: 768px) {
+		.eq-small {
+			display: none;
+		}
+
+		.eq-large {
+			display: block;
 		}
 	}
 
