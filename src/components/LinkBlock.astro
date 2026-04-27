@@ -31,7 +31,15 @@ const {links} = Astro.props;
         }
         return (
                 // <button {...attributes} class="external-link button is-normal is-rounded is-dark">
-        <a {...attributes} class="external-link button is-normal is-rounded is-dark" target="_blank" rel="noopener noreferrer">
+        <a
+            {...attributes}
+            class="external-link button is-normal is-rounded is-dark"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-ga-click="publication_link"
+            data-ga-link-name={link.name.toLowerCase()}
+            data-ga-link-url={link.url}
+        >
             <span class="icon">
                 <i class={link.icon_class}/>
             </span>
