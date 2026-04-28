@@ -86,7 +86,7 @@ const { site_title, title, subtitle, authors, links , bibtex, ga} = Astro.props;
 			}).gtag;
 			if (!(link instanceof HTMLElement) || typeof gtag !== "function") return;
 
-			gtag("event", "publication_link_click", {
+			gtag("event", `${link.dataset.gaLinkName}_click`, {
 				link_name: link.dataset.gaLinkName,
 				link_url: link.dataset.gaLinkUrl,
 				link_text: link.textContent?.trim(),
